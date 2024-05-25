@@ -10,6 +10,7 @@ import (
 	"lab3/service"
 	"log"
 	"os"
+	"runtime"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -50,8 +51,13 @@ func main() {
 		log.Fatal(err)
 	}
 	if len(boards) == 0 {
-		bg.GenerateBoards()
-	}
+		log.Default().Println("No available boards to solve are stored yet")
+		numCpu := runtime.NumCPU()
+		log.Default().Println("Creating boards with ", numCpu, " threads")
+		for i := 0; i < numCpu; i++ {
+			go bg.GenerateBoards()
+		}
+ 	}
 	ur := repository.UserRepository{DB: dbWrapper}
 	boardController := controller.BoardController{BoardService: service.BoardService{Calculator: calc, BoardRepository: br}}
 	authenticationController := controller.AuthenticationController{UserService: service.UserService{UserRepository: ur}}
