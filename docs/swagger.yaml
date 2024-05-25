@@ -1,0 +1,122 @@
+definitions:
+  model.BoardDto:
+    properties:
+      board:
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      id:
+        type: integer
+    type: object
+  model.Token:
+    properties:
+      token:
+        type: string
+    type: object
+  model.UserDto:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Rest API documentation, generated based on annotations and swag library
+  title: Lab3 Rest API
+paths:
+  /authenticate:
+    post:
+      description: authenticate user in the system
+      parameters:
+      - description: Submit
+        in: body
+        name: authenticationForm
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Token'
+      summary: get token
+      tags:
+      - users
+  /boards:
+    get:
+      description: retrieves all saved board entities from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BoardDto'
+            type: array
+      summary: get all possible boards
+      tags:
+      - boards
+  /boards/{boardId}:
+    get:
+      description: respond board dto by provided id
+      parameters:
+      - description: use id
+        in: path
+        name: boardId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.BoardDto'
+      summary: get possible board by id
+      tags:
+      - boards
+  /calculations:
+    post:
+      description: receives a 2D array from request body and search on it a circle
+        loop, depends on default conditions
+      parameters:
+      - description: Submit
+        in: body
+        name: calculations
+        required: true
+        schema:
+          $ref: '#/definitions/model.BoardDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.BoardDto'
+      summary: find circle loop
+      tags:
+      - calculations
+  /register:
+    post:
+      description: registers new user with provided date
+      parameters:
+      - description: Submit
+        in: body
+        name: registrationForm
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserDto'
+      produces:
+      - application/json
+      responses: {}
+      summary: register as new user
+      tags:
+      - users
+swagger: "2.0"
