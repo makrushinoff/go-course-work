@@ -1,5 +1,5 @@
 FROM golang:1.22.2-bullseye
-WORKDIR /app
+WORKDIR /application
 COPY . .
 RUN go mod download
 RUN go build -o /godocker
